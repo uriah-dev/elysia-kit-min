@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2021",
+    "noEmit": true,
+    /* Modules */
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "types": [
+      "bun-types",
+      "react",
+      "react-dom"
+    ],
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@src/*": ["src/*"],
+      "@app/*": ["src/app/*"],
+      "@lib/*": ["src/lib/*"],
+      "@routes/*": ["src/app/routes/*"],
+      "@db/*": ["src/db/*"],
+      "@trigger/*": ["src/trigger/*"],
+      "@emails/*": ["src/emails/*"]
+    },
+    /* Type Checking */
+    "strict": true,
+    "skipLibCheck": true,
+    "jsx": "react"
+  }
+}

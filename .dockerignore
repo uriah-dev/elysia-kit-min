@@ -1,0 +1,44 @@
+# Dependencies - these are installed fresh in the container
+node_modules
+
+# Git
+.git
+.gitignore
+
+# IDE and editor
+.vscode
+.idea
+*.swp
+*.swo
+
+# Environment files (should be injected at runtime)
+.env
+.env.*
+
+# Build artifacts and caches
+dist
+build
+.cache
+*.log
+
+# Vercel
+.vercel
+
+# Testing
+tests
+coverage
+
+# Documentation
+README.md
+llms.txt
+*.md
+
+# Development scripts
+scripts
+
+# Drizzle migrations (uncomment if you don't need migrations in container)
+# drizzle
+
+# Misc
+.DS_Store
+Thumbs.db
