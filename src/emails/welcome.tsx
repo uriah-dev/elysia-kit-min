@@ -8,16 +8,18 @@ import {
   Hr,
   Link,
 } from "@react-email/components";
+import { env } from "@src/env";
+import { upper } from "@src/lib/utils";
 
-export type WelcomeEmailProps = {
+export type Props = {
   name?: string;
   appName?: string;
 };
 
 export const WelcomeEmail = ({
   name = "there",
-  appName = "Elysia Kit",
-}: WelcomeEmailProps) => {
+  appName = upper(env.APP_NAME, "-"),
+}: Props) => {
   return (
     <Tailwind
       children={

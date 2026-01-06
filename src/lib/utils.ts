@@ -6,7 +6,8 @@ export {
 } from "./env-utils";
 import { hasValue } from "./env-utils";
 
-export const lower = (v: string) => v.toLowerCase();
+export const lower = (v: string, s = "", r = " ") => (!hasValue(s) ? v : v.replaceAll(s, r)).toLowerCase();
+export const upper = (v: string, s = "", r = " ") => (!hasValue(s) ? v : v.replaceAll(s, r)).toUpperCase();
 export const json = (v: any) => JSON.stringify(v);
 export const getRoutePrefix = (name: string) => lower(name);
 
