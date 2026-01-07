@@ -24,16 +24,12 @@ COPY package.json tsconfig.json bunfig.toml ./
 COPY src ./src
 
 # Port configuration (override with -e APP_PORT=8080 at runtime)
-ARG APP_PORT=3000
+ARG APP_PORT=3003
 ENV NODE_ENV=production
 ENV APP_PORT=${APP_PORT}
 
 # Expose port
 EXPOSE ${APP_PORT}
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:3000/health || exit 1
 
 # Run TypeScript directly (Bun handles it natively)
 CMD ["bun", "run", "src/index.ts"]
