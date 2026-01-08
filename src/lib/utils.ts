@@ -27,9 +27,9 @@ export const getProtocol = () => {
   return url.protocol.slice(0, -1);
 };
 
-export const buildServiceUrl = (port: number, path = "") => {
+export const buildServiceUrl = (port?: number, path = "") => {
   const base = getBaseUrl();
-  return `${base}:${port}${path}`;
+  return `${base}${port ? ":" + port : ""}${path}`;
 };
 
 export const isDevEnv = () => env.NODE_ENV === "development";
