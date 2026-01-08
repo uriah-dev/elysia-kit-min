@@ -1,5 +1,6 @@
 import arcjet, { detectBot, shield, tokenBucket } from "@arcjet/bun";
 import { env } from "@src/env";
+import { checkOrigin, hasValue } from "./utils";
 
 export const aj = env.ARCJET_KEY
     ? arcjet({
@@ -33,6 +34,11 @@ type SetType = { status?: number | string };
 
 export const arcjetProtect = async (request: Request, set: SetType) => {
     if (!aj) return;
+
+    const origin = request.headers.get("origin");
+    if (hasValue(origin) && checkOrigin(origin)) {
+        return;
+    }
 
     const decision = await aj.protect(request, { requested: 1 });
     if (decision.isDenied()) {

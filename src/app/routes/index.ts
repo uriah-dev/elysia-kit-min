@@ -21,7 +21,7 @@ const deriveHandler = ({
 
 const name = getRouteName();
 export const routes = new Elysia({ name })
-  .onBeforeHandle(async ({ request, set }) =>
+  .onBeforeHandle({ as: "scoped" }, async ({ request, set }) =>
     await tryWrapper(async () => await arcjetProtect(request, set))
   )
   .derive({ as: "global" }, deriveHandler);

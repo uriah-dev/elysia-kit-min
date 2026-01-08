@@ -12,7 +12,7 @@ const EnvSchema = z.object({
 
   // Trigger.dev
   TRIGGER_SECRET_KEY: z.string().optional(),
-  TRIGGER_PROJECT_ID: z.string().optional(), // Project ID or name in Trigger.dev
+  TRIGGER_PROJECT_ID: z.string().optional(),
 
   // Email
   RESEND_API_KEY: z.string().optional(),
@@ -21,6 +21,9 @@ const EnvSchema = z.object({
   // Arcjet
   ARCJET_KEY: z.string().optional(),
   ARCJET_ENV: z.enum(["development", "production"]).default("development").optional(),
+
+  // CORS
+  ALLOWED_ORIGINS: z.string().optional().transform((v) => v?.split(",").map((v) => v.trim()) || []),
 });
 export type EnvSchemaType = z.infer<typeof EnvSchema>;
 

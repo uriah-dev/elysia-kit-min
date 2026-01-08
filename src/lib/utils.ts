@@ -45,3 +45,5 @@ export const tryWrapper = async <T>(
 };
 
 export const logger = console;
+
+export const checkOrigin = (origin: string) => env.ALLOWED_ORIGINS?.includes(origin);
