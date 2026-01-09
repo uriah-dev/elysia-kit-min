@@ -7,6 +7,9 @@ let dbInstance: ReturnType<typeof drizzle<typeof schema>> | null = null;
 let clientInstance: ReturnType<typeof postgres> | null = null;
 
 const getDB = () => {
+  if (!env.DATABASE_URL) {
+    throw Error("DATABASE_URL is not configured")
+  }
   if (!dbInstance) {
     if (!clientInstance) {
       clientInstance = postgres(env.DATABASE_URL);
