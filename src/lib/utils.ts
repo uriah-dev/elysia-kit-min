@@ -44,6 +44,16 @@ export const tryWrapper = async <T>(
   }
 };
 
+export const trySyncWrapper = <T>(
+  fn: () => T
+): T | null => {
+  try {
+    return fn();
+  } catch {
+    return null;
+  }
+};
+
 export const logger = console;
 
 export const checkOrigin = (origin: string) => env.ALLOWED_ORIGINS?.includes(origin);

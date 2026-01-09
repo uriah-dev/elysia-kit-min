@@ -1,20 +1,18 @@
 import { server } from "@app/_app";
 import { env } from "@src/env";
-import { buildServiceUrl, hasValue, logger, tryWrapper } from "@lib/utils";
+import { buildServiceUrl, hasValue, logger, trySyncWrapper, tryWrapper } from "@lib/utils";
 
 export type Server = typeof server;
 
 const PORT = process.env.PORT || env.APP_PORT!;
 
-(async () => {
-  const result = await tryWrapper(async () => {
-    server.listen({port: Number(PORT), hostname: "0.0.0.0"});
-    logger.info(`🦊 Server is running at ${buildServiceUrl(PORT)}`);
-    return {success: true};
-  });
+const result = trySyncWrapper(() => {
+  server.listen({port: Number(PORT)});
+  logger.info(`🦊 Server is running at ${buildServiceUrl(PORT)}`);
+  return { success: true };
+});
 
-  if (!hasValue(result)) {
-    logger.error("Failed to start server");
-    process.exit(1);
-  }
-})();
+if (!hasValue(result)) {
+  logger.error("Failed to start server");
+  process.exit(1);
+}
