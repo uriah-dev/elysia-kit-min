@@ -32,4 +32,4 @@ ENV APP_PORT=${APP_PORT}
 EXPOSE ${APP_PORT}
 
 # Run TypeScript directly (Bun handles it natively)
-CMD ["bun", "--bun", "run", "src/index.ts"]
+CMD ["bun", "src/index.ts"]
