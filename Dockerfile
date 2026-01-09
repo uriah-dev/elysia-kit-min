@@ -1,17 +1,35 @@
 # syntax=docker/dockerfile:1
 
-FROM oven/bun:1.1.8-slim
+# ---- Build Stage ----
+FROM oven/bun:1.1.8-slim AS builder
 
 WORKDIR /app
 
-COPY package.json tsconfig.json bunfig.toml ./
+# Copy package files
+COPY package.json bun.lock ./
+
+# Install production dependencies only
 RUN bun install --frozen-lockfile --production
 
+# ---- Production Stage ----
+FROM oven/bun:1.1.8-slim AS production
+
+WORKDIR /app
+
+# Copy dependencies and config
+COPY --from=builder /app/node_modules ./node_modules
+COPY package.json tsconfig.json bunfig.toml ./
+
+# Copy source code
 COPY src ./src
 
+# Port configuration (override with -e PORT=8080 at runtime)
+ARG PORT=3000
 ENV NODE_ENV=production
-ENV PORT=3000
+ENV PORT=${PORT}
 
-EXPOSE 3000
+# Expose port
+EXPOSE ${PORT}
 
+# Run TypeScript directly (Bun handles it natively)
 CMD ["bun", "src/index.ts"]
