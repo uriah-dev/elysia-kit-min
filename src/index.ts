@@ -8,7 +8,7 @@ const PORT = process.env.PORT || env.APP_PORT!;
 
 (async () => {
   const result = await tryWrapper(async () => {
-    server.listen({port: PORT, hostname: "0.0.0.0"});
+    server.listen({port: Number(PORT), hostname: "0.0.0.0"});
     logger.info(`🦊 Server is running at ${buildServiceUrl(PORT)}`);
     return {success: true};
   });
