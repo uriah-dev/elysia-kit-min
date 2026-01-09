@@ -23,13 +23,13 @@ COPY package.json tsconfig.json bunfig.toml ./
 # Copy source code
 COPY src ./src
 
-# Port configuration (override with -e APP_PORT=8080 at runtime)
-ARG APP_PORT=3000
+# Port configuration (override with -e PORT=8080 at runtime)
+ARG PORT=3000
 ENV NODE_ENV=production
-ENV APP_PORT=${APP_PORT}
+ENV PORT=${PORT}
 
 # Expose port
-EXPOSE ${APP_PORT}
+EXPOSE ${PORT}
 
 # Run TypeScript directly (Bun handles it natively)
 CMD ["bun", "src/index.ts"]
