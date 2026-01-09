@@ -33,6 +33,7 @@
     "drizzle-orm": "^0.44.7",
     "drizzle-zod": "^0.8.3",
     "elysia": "latest",
+    "openapi-typescript": "^7.10.1",
     "pino": "^10.1.0",
     "pino-loki": "^3.0.0",
     "pino-pretty": "^13.1.3",
