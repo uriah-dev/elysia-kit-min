@@ -22,7 +22,7 @@ COPY package.json tsconfig.json bunfig.toml ./
 
 # Copy source code
 COPY src ./src
-RUN bun build src/index.ts --outdir dist --target bun
+# RUN bun build src/index.ts --outdir dist --target bun
 
 # Port configuration (override with -e PORT=8080 at runtime)
 ARG PORT=3000
