@@ -33,4 +33,4 @@ ENV PORT=${PORT}
 EXPOSE ${PORT}
 
 # Run TypeScript directly (Bun handles it natively)
-CMD ["bun", "src/index.ts"]
+CMD ["bun", "--bun", "src/index.ts"]
