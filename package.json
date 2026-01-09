@@ -19,7 +19,7 @@
     "trigger:dev": "bunx --bun trigger.dev@latest dev",
     "trigger:deploy": "bunx --bun trigger.dev@latest deploy",
     "email": "email dev --dir src/emails",
-    "docker:build": "docker build -t elysia-kit-min .",
+    "docker:build": "docker build --no-cache -t elysia-kit-min .",
     "docker:run": "docker run --rm --name elysia-kit-min --env-file .env elysia-kit-min",
     "docker:start": "bun docker:build && bun docker:run",
     "docker:stop": "docker stop elysia-kit-min",
