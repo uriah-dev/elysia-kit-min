@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "vercel-test",
+      "name": "elysia-kit-min",
       "dependencies": {
         "@arcjet/bun": "^1.0.0-beta.16",
         "@arcjet/inspect": "^1.0.0-beta.16",
