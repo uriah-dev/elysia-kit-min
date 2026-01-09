@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # ---- Build Stage ----
-FROM oven/bun:1-alpine AS builder
+FROM oven/bun:1-debian AS builder
 
 WORKDIR /app
 
@@ -12,7 +12,7 @@ COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile --production
 
 # ---- Production Stage ----
-FROM oven/bun:1-alpine AS production
+FROM oven/bun:1-debian AS production
 
 WORKDIR /app
 
