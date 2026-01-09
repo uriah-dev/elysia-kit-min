@@ -22,7 +22,6 @@ COPY package.json tsconfig.json bunfig.toml ./
 
 # Copy source code
 COPY src ./src
-# RUN bun build src/index.ts --outdir dist --target bun
 
 # Port configuration (override with -e PORT=8080 at runtime)
 ARG PORT=3000
@@ -33,4 +32,4 @@ ENV PORT=${PORT}
 EXPOSE ${PORT}
 
 # Run TypeScript directly (Bun handles it natively)
-CMD ["bun", "--bun", "run", "src/index.ts"]
+CMD ["bun", "--bun", "src/index.ts"]
