@@ -8,8 +8,7 @@ import {
   Hr,
   Link,
 } from "@react-email/components";
-import { env } from "@src/env";
-import { upper } from "@src/lib/utils";
+import { DEFAULT_APP_NAME } from "@src/lib/const";
 
 export type Props = {
   name?: string;
@@ -18,7 +17,7 @@ export type Props = {
 
 export const WelcomeEmail = ({
   name = "there",
-  appName = upper(env.APP_NAME, "-"),
+  appName = DEFAULT_APP_NAME,
 }: Props) => {
   return (
     <Tailwind
@@ -143,8 +142,8 @@ export const WelcomeEmail = ({
 };
 
 // This is for dev rendering
-WelcomeEmail.PreviewProps = {
-  name: "John Doe",
-  appName: "Elysia Kit",
-};
+// WelcomeEmail.PreviewProps = {
+//   name: "John Doe",
+//   appName: "Elysia Kit",
+// };
 export default WelcomeEmail;
