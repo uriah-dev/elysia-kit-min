@@ -25,4 +25,4 @@ ENV PORT=${PORT}
 
 EXPOSE ${PORT}
 
-CMD ["bun", "--bun", "src/index.ts"]
+CMD ["bun", "src/index.ts"]
