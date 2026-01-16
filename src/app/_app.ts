@@ -7,16 +7,18 @@ import { home } from "@routes/home";
 import { user } from "@routes/user";
 import { health } from "@routes/health";
 import { types } from "@routes/types";
-import { cronJobs } from "@routes/cron";
+// import { cronJobs } from "@routes/cron";
 
 export const app = new Elysia({ name: env.APP_NAME })
-  .use(cors({
-    origin: env.ALLOWED_ORIGINS,
-    credentials: true,
-  }))
+  .use(
+    cors({
+      origin: env.ALLOWED_ORIGINS,
+      credentials: true,
+    })
+  )
   .use(html())
   .use(openapi())
-  .use(cronJobs)
+  // .use(cronJobs)
   .use(health)
   .use(types)
   .use(home)
