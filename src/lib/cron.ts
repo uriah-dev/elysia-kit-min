@@ -1,4 +1,18 @@
 /**
+ * Trigger.dev Scheduled Tasks (Cron Jobs)
+ * This is the recommended approach for scheduled tasks, especially on Sevalla
+ * See: https://trigger.dev/docs/tasks/scheduled
+ *
+ * Scheduled tasks are defined in src/trigger/tasks/scheduled-jobs.ts
+ * To use them, run: bun run trigger:dev (for local development)
+ * or deploy with: bun run trigger:deploy (for production)
+ */
+
+export { schedules, CronPatterns, scheduleManager } from "@src/trigger/cron";
+export type { ScheduleOptions } from "@src/trigger/cron";
+
+/**
+ * Alternative: @elysiajs/cron (Legacy)
  * Install @elysiajs/cron if you want to use elysia cron jobs
  * Uncomment the code below to enable it
  * Uncomment the code in routes/cron.ts to enable it
