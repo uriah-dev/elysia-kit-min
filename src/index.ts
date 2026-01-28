@@ -18,7 +18,6 @@ const result = trySyncWrapper(() => {
   return { success: true };
 });
 
-if (!hasValue(result)) {
+if (!hasValue(result) || !result?.success) {
   logger.error("Failed to start server");
-  process.exit(1);
 }
