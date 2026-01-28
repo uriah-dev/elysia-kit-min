@@ -1,12 +1,6 @@
 import { server } from "@app/_app";
 import { env } from "@src/env";
-import {
-  buildServiceUrl,
-  hasValue,
-  logger,
-  trySyncWrapper,
-  tryWrapper,
-} from "@lib/utils";
+import { buildServiceUrl, hasValue, logger, trySyncWrapper } from "@lib/utils";
 
 export type Server = typeof server;
 
