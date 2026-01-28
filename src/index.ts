@@ -1,13 +1,19 @@
 import { server } from "@app/_app";
 import { env } from "@src/env";
-import { buildServiceUrl, hasValue, logger, trySyncWrapper } from "@lib/utils";
+import {
+  buildServiceUrl,
+  hasValue,
+  isDevEnv,
+  logger,
+  trySyncWrapper,
+} from "@lib/utils";
 
 export type Server = typeof server;
 
-const PORT = process.env.PORT || env.APP_PORT!;
+const PORT = (isDevEnv() ? env.APP_PORT : process.env.PORT)!;
 
 const result = trySyncWrapper(() => {
-  server.listen({ hostname: "0.0.0.0" });
+  server.listen({ hostname: "0.0.0.0", port: PORT });
   logger.info(`🦊 Server is running at ${buildServiceUrl(PORT)}`);
   return { success: true };
 });
