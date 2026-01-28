@@ -13,7 +13,7 @@ export type Server = typeof server;
 const PORT = process.env.PORT || env.APP_PORT!;
 
 const result = trySyncWrapper(() => {
-  server.listen({});
+  server.listen({ hostname: "0.0.0.0" });
   logger.info(`🦊 Server is running at ${buildServiceUrl(PORT)}`);
   return { success: true };
 });
