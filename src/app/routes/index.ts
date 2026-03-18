@@ -5,6 +5,7 @@ import { db } from "@src/db";
 import { createQueue } from "@src/trigger/queue";
 import { sendEmailTask } from "@src/trigger/email";
 import { arcjetProtect } from "@src/lib/arcjet";
+import { jwtAuth } from "@src/lib/auth";
 
 const deriveHandler = ({
   server,
@@ -21,8 +22,11 @@ const deriveHandler = ({
 
 const name = getRouteName();
 export const routes = new Elysia({ name })
-  .onBeforeHandle({ as: "scoped" }, async ({ request, set }) =>
-    await tryWrapper(async () => await arcjetProtect(request, set))
+  .use(jwtAuth)
+  .onBeforeHandle(
+    { as: "scoped" },
+    async ({ request, set }) =>
+      await tryWrapper(async () => await arcjetProtect(request, set)),
   )
   .derive({ as: "global" }, deriveHandler);
 

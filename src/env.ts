@@ -8,7 +8,8 @@ const EnvSchema = z.object({
   APP_URL: z.url(),
   NODE_ENV: z
     .enum(["development", "production", "test"])
-    .default("development").optional(),
+    .default("development")
+    .optional(),
 
   // Trigger.dev
   TRIGGER_SECRET_KEY: z.string().optional(),
@@ -20,13 +21,23 @@ const EnvSchema = z.object({
 
   // Arcjet
   ARCJET_KEY: z.string().optional(),
-  ARCJET_ENV: z.enum(["development", "production"]).default("development").optional(),
+  ARCJET_ENV: z
+    .enum(["development", "production"])
+    .default("development")
+    .optional(),
+
+  // JWT
+  JWT_SECRET: z.string().min(32),
+  JWT_EXPIRES_IN: z.string().default("7d"),
 
   // CORS
-  ALLOWED_ORIGINS: z.string().optional().transform((v) => v?.split(",").map((v) => v.trim()) || []),
+  ALLOWED_ORIGINS: z
+    .string()
+    .optional()
+    .transform((v) => v?.split(",").map((v) => v.trim()) || []),
 });
 export type EnvSchemaType = z.infer<typeof EnvSchema>;
 
 export const env = EnvSchema.parse(
-  buildFromSchema(EnvSchema, getEnvValue(EnvSchema))
+  buildFromSchema(EnvSchema, getEnvValue(EnvSchema)),
 );

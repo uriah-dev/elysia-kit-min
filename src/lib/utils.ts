@@ -1,13 +1,11 @@
 import { env } from "@src/env";
-export {
-  hasValue,
-  getEnvValue,
-  buildFromSchema,
-} from "./env-utils";
+export { hasValue, getEnvValue, buildFromSchema } from "./env-utils";
 import { hasValue } from "./env-utils";
 
-export const lower = (v: string, s = "", r = " ") => (!hasValue(s) ? v : v.replaceAll(s, r)).toLowerCase();
-export const upper = (v: string, s = "", r = " ") => (!hasValue(s) ? v : v.replaceAll(s, r)).toUpperCase();
+export const lower = (v: string, s = "", r = " ") =>
+  (!hasValue(s) ? v : v.replaceAll(s, r)).toLowerCase();
+export const upper = (v: string, s = "", r = " ") =>
+  (!hasValue(s) ? v : v.replaceAll(s, r)).toUpperCase();
 export const json = (v: any) => JSON.stringify(v);
 export const getRoutePrefix = (name: string) => lower(name);
 
@@ -35,7 +33,7 @@ export const buildServiceUrl = (port: number | string, path = "") => {
 export const isDevEnv = () => env.NODE_ENV === "development";
 
 export const tryWrapper = async <T>(
-  fn: () => Promise<T>
+  fn: () => Promise<T>,
 ): Promise<T | null> => {
   try {
     return await fn();
@@ -44,9 +42,7 @@ export const tryWrapper = async <T>(
   }
 };
 
-export const trySyncWrapper = <T>(
-  fn: () => T
-): T | null => {
+export const trySyncWrapper = <T>(fn: () => T): T | null => {
   try {
     return fn();
   } catch {
@@ -56,4 +52,5 @@ export const trySyncWrapper = <T>(
 
 export const logger = console;
 
-export const checkOrigin = (origin: string) => env.ALLOWED_ORIGINS?.includes(origin);
+export const checkOrigin = (origin: string) =>
+  env.ALLOWED_ORIGINS?.includes(origin);
