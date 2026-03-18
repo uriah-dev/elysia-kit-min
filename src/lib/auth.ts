@@ -1,7 +1,7 @@
 import { jwt } from "@elysiajs/jwt";
 import { env } from "@src/env";
 import { apiError } from "@src/lib/common";
-import { trySyncWrapper, tryWrapper } from "./utils";
+import { hasValue, trySyncWrapper, tryWrapper } from "./utils";
 import { Elysia } from "elysia";
 import { eq } from "drizzle-orm";
 import { type User, usersTable } from "@src/db/schema";
@@ -39,7 +39,7 @@ export function extractTokenFromHeader(headers: Headers): string | null {
   }
 
   const [type, token] = authHeader.split(" ");
-  if (type !== "Bearer" || !token) {
+  if (type !== "Bearer" || !hasValue(token)) {
     return null;
   }
 
@@ -126,7 +126,7 @@ export const getUser = async ({
     columns: { id: true, email: true, name: true, role: true },
   });
 
-  if (!dbUser) {
+  if (!hasValue(dbUser)) {
     throw apiError("NOT_FOUND", "User not found");
   }
   return dbUser;
@@ -152,7 +152,7 @@ export const getUserByEmail = async ({
     columns: { id: true, email: true, name: true, role: true },
   });
 
-  if (!dbUser) {
+  if (!hasValue(dbUser)) {
     throw apiError("NOT_FOUND", "User not found");
   }
   return dbUser;
@@ -175,7 +175,7 @@ export const requireAuth = (allowedRoles?: UserType | UserType[]) => {
         headers: context.headers,
         set,
       });
-      if (!user) {
+      if (!hasValue(user)) {
         set.status = 401;
         throw apiError("UNAUTHORIZED", "Invalid or expired session token");
       }
