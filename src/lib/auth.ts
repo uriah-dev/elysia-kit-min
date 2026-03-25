@@ -7,6 +7,7 @@ import { eq } from "drizzle-orm";
 import { type User, usersTable } from "@src/db/schema";
 import type { DBType } from "@src/db";
 import type { AuthContext } from "@src/app/routes/auth";
+import { AUTH_CONFIG } from "./const";
 
 export type JwtPayload = {
   sub: string; // User ID
@@ -39,7 +40,7 @@ export function extractTokenFromHeader(headers: Headers): string | null {
   }
 
   const [type, token] = authHeader.split(" ");
-  if (type !== "Bearer" || !hasValue(token)) {
+  if (type !== AUTH_CONFIG.user || !hasValue(token)) {
     return null;
   }
 
@@ -191,4 +192,33 @@ export const requireAuth = (allowedRoles?: UserType | UserType[]) => {
         user: dbUser,
       };
     });
+};
+
+export function extractApiKeyFromHeader(headers: Headers | any): string | null {
+  const apiKey = headers["X-API-Key"] || headers["x-api-key"];
+  if (!hasValue(apiKey)) {
+    return null;
+  }
+  const [type, token] = apiKey.split(" ");
+  if (type !== AUTH_CONFIG.public || !hasValue(token)) {
+    return null;
+  }
+  if (!hasValue(token)) {
+    return null;
+  }
+  return token;
+}
+
+export const requireApiKey = () => {
+  return new Elysia({ name: "ApiKeyMiddleware" }).derive(
+    { as: "scoped" },
+    async ({ headers, set }) => {
+      const apiKey = extractApiKeyFromHeader(headers);
+      if (!hasValue(apiKey) || apiKey !== env.API_KEY) {
+        set.status = 401;
+        throw apiError("UNAUTHORIZED", "Not Allowed!");
+      }
+      return { authenticated: true };
+    },
+  );
 };

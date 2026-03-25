@@ -30,6 +30,9 @@ const EnvSchema = z.object({
   JWT_SECRET: z.string().min(32),
   JWT_EXPIRES_IN: z.string().default("7d"),
 
+  // API Key
+  API_KEY: z.string().min(32),
+
   // CORS
   ALLOWED_ORIGINS: z
     .string()

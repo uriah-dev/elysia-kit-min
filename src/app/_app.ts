@@ -8,17 +8,13 @@ import { user } from "@routes/user";
 import { auth } from "@routes/auth";
 import { health } from "@routes/health";
 import { types } from "@routes/types";
+import { CORS_CONFIG, OPENAPI_CONFIG } from "@src/lib/const";
 // import { cronJobs } from "@routes/cron";
 
 export const app = new Elysia({ name: env.APP_NAME })
-  .use(
-    cors({
-      origin: env.ALLOWED_ORIGINS,
-      credentials: true,
-    }),
-  )
+  .use(cors(CORS_CONFIG))
+  .use(openapi(OPENAPI_CONFIG))
   .use(html())
-  .use(openapi())
   // .use(cronJobs)
   .use(health)
   .use(types)
