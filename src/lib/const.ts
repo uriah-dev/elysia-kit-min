@@ -1,5 +1,4 @@
 import { env } from "@src/env";
-import { upper } from "./utils";
 
 export const DEFAULT_APP_NAME = "Elysia Kit Min";
 
@@ -17,7 +16,7 @@ export const OPENAPI_CONFIG = {
   path: "/docs",
   documentation: {
     info: {
-      title: `${upper(DEFAULT_APP_NAME)} Documentation`,
+      title: `${DEFAULT_APP_NAME.toUpperCase()} Documentation`,
       version: "0.0.1",
     },
   },

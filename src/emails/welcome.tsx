@@ -141,9 +141,8 @@ export const WelcomeEmail = ({
   );
 };
 
-// This is for dev rendering
-// WelcomeEmail.PreviewProps = {
-//   name: "John Doe",
-//   appName: "Elysia Kit",
-// };
+WelcomeEmail.PreviewProps = {
+  name: "John Doe",
+  appName: "Elysia Kit",
+};
 export default WelcomeEmail;

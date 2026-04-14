@@ -50,3 +50,4 @@ infra/node_modules
 # Vercel build output
 api/index.js
 dist
+tsconfig.tsbuildinfo
