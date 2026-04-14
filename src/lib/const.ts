@@ -14,7 +14,7 @@ export const CORS_CONFIG = {
 };
 
 export const OPENAPI_CONFIG = {
-  path: "/api/docs",
+  path: "/docs",
   documentation: {
     info: {
       title: `${upper(DEFAULT_APP_NAME)} Documentation`,
