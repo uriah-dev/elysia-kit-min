@@ -1,7 +1,6 @@
 import { Elysia } from "elysia";
 import { cors } from "@elysiajs/cors";
 import { openapi } from "@elysiajs/openapi";
-import { html } from "@elysiajs/html";
 import { env } from "@src/env";
 import { home } from "@routes/home";
 import { user } from "@routes/user";
@@ -9,12 +8,13 @@ import { auth } from "@routes/auth";
 import { health } from "@routes/health";
 import { types } from "@routes/types";
 import { CORS_CONFIG, OPENAPI_CONFIG } from "@src/lib/const";
+import { requireApiKey } from "@src/lib/auth";
 // import { cronJobs } from "@routes/cron";
 
 export const app = new Elysia({ name: env.APP_NAME })
   .use(cors(CORS_CONFIG))
   .use(openapi(OPENAPI_CONFIG))
-  .use(html())
+  .use(requireApiKey())
   // .use(cronJobs)
   .use(health)
   .use(types)

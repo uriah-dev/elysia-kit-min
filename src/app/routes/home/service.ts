@@ -1,19 +1,11 @@
-import { renderToReadableStream } from "react-dom/server";
-import { createElement } from "react";
 import { apiSuccess } from "@src/lib/common";
 import type { PersonType } from "./schema";
 import type { HomeContext } from ".";
-import { Home } from "@src/app/components/home";
-
 
 export const sayHello = async ({ logger }: HomeContext) => {
   logger.info("Response success");
 
-  const stream = await renderToReadableStream(createElement(Home));
-
-  return new Response(stream, {
-    headers: { "Content-Type": "text/html" },
-  });
+  return apiSuccess("Welcome here!");
 };
 
 export const sayHiPerson = ({

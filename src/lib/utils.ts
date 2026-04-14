@@ -1,6 +1,7 @@
 import { env } from "@src/env";
 export { hasValue, getEnvValue, buildFromSchema } from "./env-utils";
 import { hasValue } from "./env-utils";
+import { pino } from "pino";
 
 export const lower = (v: string, s = "", r = " ") =>
   (!hasValue(s) ? v : v.replaceAll(s, r)).toLowerCase();
@@ -50,7 +51,14 @@ export const trySyncWrapper = <T>(fn: () => T): T | null => {
   }
 };
 
-export const logger = console;
+export const logger = pino({
+  transport: {
+    target: "pino-pretty",
+    options: {
+      colorize: true,
+    },
+  },
+});
 
 export const checkOrigin = (origin: string) =>
   env.ALLOWED_ORIGINS?.includes(origin);
