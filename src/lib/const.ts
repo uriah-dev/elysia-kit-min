@@ -5,7 +5,7 @@ export const DEFAULT_APP_NAME = "Elysia Kit Min";
 
 export const AUTH_CONFIG = {
   user: "Bearer",
-  public: "GBRAK",
+  public: "ELKMIN",
 };
 
 export const CORS_CONFIG = {
