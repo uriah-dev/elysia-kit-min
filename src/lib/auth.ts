@@ -33,8 +33,8 @@ export const jwtAuth = jwt({
   exp: env.JWT_EXPIRES_IN,
 });
 
-export function extractTokenFromHeader(headers: Headers): string | null {
-  const authHeader = headers.get("Authorization");
+export function extractTokenFromHeader(headers: Headers | any): string | null {
+  const authHeader = headers["authorization"] || headers["Authorization"];
   if (!authHeader) {
     return null;
   }
@@ -57,7 +57,9 @@ export async function authenticate({
     set.status = 401;
     return null;
   }
-  const payload = await tryWrapper<JwtPayload>(await jwtPlugin.verify(token));
+  const payload = await tryWrapper<JwtPayload>(
+    async () => await jwtPlugin.verify(token),
+  );
   if (!payload) {
     set.status = 401;
     return null;
@@ -76,7 +78,9 @@ export async function optionalAuth({
   if (!token) {
     return null;
   }
-  const payload = await tryWrapper<JwtPayload>(await jwtPlugin.verify(token));
+  const payload = await tryWrapper<JwtPayload>(
+    async () => await jwtPlugin.verify(token),
+  );
   if (!payload) {
     return null;
   }
