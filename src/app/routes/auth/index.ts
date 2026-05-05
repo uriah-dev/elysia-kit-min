@@ -5,6 +5,7 @@ import { login, register, getMe } from "./service";
 import { UsersInsertSchema } from "@db/schema/users";
 import type { ElysiaCookie } from "elysia/cookies";
 import { getRoutePrefix } from "@src/lib/utils";
+import { formatApiError } from "@src/lib/common";
 
 export type AuthContext<T = {}> = Context<
   T & {
@@ -29,9 +30,11 @@ export const auth = new Elysia(config)
   .use(routes)
   .post("/login", login, {
     body: UsersInsertSchema.pick({ email: true }),
+    error: formatApiError,
   })
   .post("/register", register, {
     body: UsersInsertSchema.pick({ email: true, name: true }),
+    error: formatApiError,
   })
   .use(requireAuth())
   .get("/me", getMe);

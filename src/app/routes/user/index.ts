@@ -10,6 +10,7 @@ import {
   testMail,
 } from "./service";
 import { UsersInsertSchema, UsersUpdateSchema } from "@db/schema/users";
+import { formatApiError } from "@src/lib/common";
 
 export type UserContext<T = {}> = Context<T>;
 
@@ -25,11 +26,14 @@ export const user = new Elysia(config)
   .get("/:id", getUser)
   .post("/", createUser, {
     body: UsersInsertSchema,
+    error: formatApiError,
   })
   .put("/:id", updateUser, {
     body: UsersUpdateSchema,
+    error: formatApiError,
   })
   .delete("/:id", deleteUser)
   .post("/email", testMail, {
     body: UsersInsertSchema.pick({ email: true }),
+    error: formatApiError,
   });

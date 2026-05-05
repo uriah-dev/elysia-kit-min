@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { hasValue } from "./utils";
+import { hasValue, trySyncWrapper } from "./utils";
 import { init } from "@paralleldrive/cuid2";
 
 export const ID_CONFIG = { length: 24 };
@@ -56,7 +56,7 @@ export const apiSuccess = <T>(data: T, message?: string): SuccessResponse<T> =>
 export const apiError = (
   code: ErrorCodesType,
   message: string,
-  details?: unknown
+  details?: unknown,
 ): Response => {
   const status = ErrorStatusCodes[code];
   const body: ErrorResponseBody = {
@@ -83,7 +83,7 @@ type APITryWrapperResult<T> = Promise<SuccessResponse<T> | ErrorResponse>;
 
 export const apiTryWrapper = async <T>(
   fn: () => Promise<T | SuccessResponse<T> | ErrorResponse>,
-  options?: APITryWrapperOptions
+  options?: APITryWrapperOptions,
 ): APITryWrapperResult<T> => {
   try {
     const result = await fn();
@@ -101,9 +101,25 @@ export const apiTryWrapper = async <T>(
     return apiError(
       options?.errorCode || "INTERNAL_ERROR",
       options?.errorMessage || error.message || "An error occurred",
-      error.message
+      error.message,
     );
   }
 };
 
 export const createId = init(ID_CONFIG);
+
+type ErrorType = Array<{
+  path: (string | number)[];
+  message: string;
+}>;
+
+export const formatApiError = (errors: any) => {
+  const formatted = trySyncWrapper(() => JSON.parse(errors.error.message));
+  const error = formatted?.errors as ErrorType;
+  const type = formatted?.type;
+  if (!formatted || type !== "validation") return error;
+  return error.map((error) => ({
+    field: error.path.join("."),
+    message: error.message,
+  }));
+};
