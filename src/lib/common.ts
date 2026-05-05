@@ -118,8 +118,9 @@ export const formatApiError = (errors: any) => {
   const error = formatted?.errors as ErrorType;
   const type = formatted?.type;
   if (!formatted || type !== "validation") return error;
-  return error.map((error) => ({
+  const formattedError = error.map((error) => ({
     field: error.path.join("."),
     message: error.message,
   }));
+  return apiError("VALIDATION_ERROR", "Validation error", formattedError);
 };
