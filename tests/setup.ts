@@ -1,7 +1,10 @@
 // Test environment setup
+
+import { AUTH_CONFIG } from "@src/lib/const";
+
 // Set test environment variables before importing app modules
 export const authHeaders = {
-  "x-api-key": `ELKMIN ${process.env.API_KEY}`,
+  "x-api-key": `${AUTH_CONFIG.public} ${process.env.API_KEY}`,
   "user-agent": "bun-test",
 };
 
