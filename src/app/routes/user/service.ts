@@ -7,6 +7,7 @@ import {
   deleteById,
 } from "@db/helper";
 import { apiSuccess, apiError, apiTryWrapper } from "@src/lib/common";
+import { hashPassword } from "@src/lib/utils";
 import type { UserContext } from ".";
 import type { UserInsert, UserUpdate } from "@db/schema/users";
 import { WelcomeEmail } from "@src/emails/welcome";
@@ -19,7 +20,11 @@ export const createUser = async ({
 }: UserContext<{ body: UserInsert }>) =>
   apiTryWrapper(
     async () => {
-      const user = await insertOne(db, usersTable, body);
+      const hashedPassword = await hashPassword(body.password);
+      const user = await insertOne(db, usersTable, {
+        ...body,
+        password: hashedPassword,
+      });
       logger.info({ userId: user.id }, "User created");
       return apiSuccess(user, "User created successfully");
     },
@@ -32,7 +37,7 @@ export const createUser = async ({
         }
         return null;
       },
-    }
+    },
   );
 
 export const getUser = async ({
@@ -58,7 +63,7 @@ export const getUser = async ({
         logger.error({ error: error.message }, "Failed to get user");
         return null;
       },
-    }
+    },
   );
 
 export const listUsers = async ({ logger, db }: UserContext) =>
@@ -74,7 +79,7 @@ export const listUsers = async ({ logger, db }: UserContext) =>
         logger.error({ error: error.message }, "Failed to list users");
         return null;
       },
-    }
+    },
   );
 
 export const updateUser = async ({
@@ -91,7 +96,13 @@ export const updateUser = async ({
         return apiError("NOT_FOUND", "User not found");
       }
 
-      const updated = await updateById(db, usersTable, params.id, body);
+      let data = body;
+      if (body.password) {
+        const hashedPassword = await hashPassword(body.password);
+        data = { ...body, password: hashedPassword };
+      }
+
+      const updated = await updateById(db, usersTable, params.id, data);
       logger.info({ userId: updated?.id }, "User updated");
       return apiSuccess(updated, "User updated successfully");
     },
@@ -104,7 +115,7 @@ export const updateUser = async ({
         }
         return null;
       },
-    }
+    },
   );
 
 export const deleteUser = async ({
@@ -130,7 +141,7 @@ export const deleteUser = async ({
         logger.error({ error: error.message }, "Failed to delete user");
         return null;
       },
-    }
+    },
   );
 
 export const testMail = async ({
@@ -160,5 +171,5 @@ export const testMail = async ({
         logger.error({ error: error.message }, "Failed to queue email");
         return null;
       },
-    }
+    },
   );

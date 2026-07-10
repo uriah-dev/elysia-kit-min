@@ -39,6 +39,7 @@ describe("User Routes", () => {
       const userData = {
         name: "Test User",
         email: `test@example.com`,
+        password: "securepassword123",
       };
 
       const response = await app.handle(

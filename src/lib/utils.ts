@@ -62,3 +62,6 @@ export const logger = pino({
 
 export const checkOrigin = (origin: string) =>
   env.ALLOWED_ORIGINS?.includes(origin);
+
+export const hashPassword = async (password: string) =>
+  await Bun.password.hash(password, { algorithm: "bcrypt" });

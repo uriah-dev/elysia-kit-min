@@ -9,6 +9,7 @@ export const usersTable = pgTable("users", {
   ...defaults(),
   name: varchar("name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).notNull().unique(),
+  password: varchar("password", { length: 255 }).notNull(),
   role: UserRoleEnum("role").notNull().default("USER"),
 });
 
@@ -22,7 +23,9 @@ const OverrideSelectSchema = {
 export const UsersSelectSchema = createSelectSchema(
   usersTable,
   OverrideSelectSchema,
-);
+).omit({
+  password: true,
+});
 
 export const UsersInsertSchema = createInsertSchema(
   usersTable,
