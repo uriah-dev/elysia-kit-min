@@ -1,11 +1,18 @@
 import "../setup";
 import { describe, expect, it, mock } from "bun:test";
 import { app } from "@app/_app";
+import { authHeaders } from "../setup";
 
 // Mock the database helpers to avoid connection issues during tests
 mock.module("@db/helper", () => ({
   findAll: () => Promise.resolve([]),
-  insertOne: (db: any, table: any, data: any) => Promise.resolve({ id: "1", created_at: new Date(), updated_at: new Date(), ...data }),
+  insertOne: (db: any, table: any, data: any) =>
+    Promise.resolve({
+      id: "1",
+      created_at: new Date(),
+      updated_at: new Date(),
+      ...data,
+    }),
   findById: () => Promise.resolve(undefined),
   updateById: () => Promise.resolve(undefined),
   deleteById: () => Promise.resolve(undefined),
@@ -14,7 +21,11 @@ mock.module("@db/helper", () => ({
 describe("User Routes", () => {
   describe("GET /user", () => {
     it("should return users list", async () => {
-      const response = await app.handle(new Request("http://localhost/user"));
+      const response = await app.handle(
+        new Request("http://localhost/user", {
+          headers: authHeaders,
+        }),
+      );
 
       expect(response.status).toBe(200);
       const json = await response.json();
@@ -35,9 +46,10 @@ describe("User Routes", () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            ...authHeaders,
           },
           body: JSON.stringify(userData),
-        })
+        }),
       );
 
       expect(response.status).toBe(200);
@@ -53,9 +65,10 @@ describe("User Routes", () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            ...authHeaders,
           },
           body: JSON.stringify({ name: "Test" }),
-        })
+        }),
       );
 
       expect(response.status).toBe(422);
@@ -64,7 +77,11 @@ describe("User Routes", () => {
 
   describe("GET /user/:id", () => {
     it("should return 404 for non-existent user", async () => {
-      const response = await app.handle(new Request("http://localhost/user/non-existent"));
+      const response = await app.handle(
+        new Request("http://localhost/user/non-existent", {
+          headers: authHeaders,
+        }),
+      );
       expect(response.status).toBe(404);
     });
   });
@@ -76,9 +93,10 @@ describe("User Routes", () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            ...authHeaders,
           },
           body: JSON.stringify({ name: "Updated" }),
-        })
+        }),
       );
       expect(response.status).toBe(404);
     });
@@ -89,7 +107,8 @@ describe("User Routes", () => {
       const response = await app.handle(
         new Request("http://localhost/user/non-existent", {
           method: "DELETE",
-        })
+          headers: authHeaders,
+        }),
       );
       expect(response.status).toBe(404);
     });
