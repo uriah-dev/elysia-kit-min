@@ -3,7 +3,7 @@
   "description": "A modular Elysia boilerplate with Drizzle ORM, full observability (traces/metrics/logs), email templates, background jobs, and flexible deployment options (Vercel, PM2, or Kubernetes).",
   "version": "1.0.3",
   "scripts": {
-    "dev": "bun --bun run --watch src/index.ts",
+    "dev": "bun --bun test && bun --bun run --watch src/index.ts",
     "start": "bun --bun run src/index.ts",
     "test": "bun test",
     "test:watch": "bun test --watch",
