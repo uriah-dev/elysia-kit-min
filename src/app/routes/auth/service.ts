@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 import { apiSuccess, apiError, apiTryWrapper } from "@src/lib/common";
 import type { AuthContext } from ".";
 import { getUserByEmail, signToken } from "@src/lib/auth";
+import { hashPassword } from "@src/lib/utils";
 
 export const login = async ({
   body,
@@ -42,10 +43,13 @@ export const register = async ({
   jwt,
   logger,
   db,
-}: AuthContext<{ body: { email: string; name: string }; jwt: any }>) =>
+}: AuthContext<{
+  body: { email: string; name: string; password: string };
+  jwt: any;
+}>) =>
   apiTryWrapper(
     async () => {
-      const { email, name } = body;
+      const { email, name, password } = body;
 
       const existing = await db.query.usersTable.findFirst({
         where: eq(usersTable.email, email),
@@ -55,9 +59,11 @@ export const register = async ({
         return apiError("VALIDATION_ERROR", "Email already registered");
       }
 
+      const hashedPassword = await hashPassword(password);
+
       const [user] = await db
         .insert(usersTable)
-        .values({ email, name })
+        .values({ email, name, password: hashedPassword })
         .returning();
 
       const token = await signToken(jwt, user);

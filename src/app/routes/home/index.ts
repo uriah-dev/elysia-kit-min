@@ -11,10 +11,10 @@ export const config = {
   name: ROUTE_NAME,
 };
 
-export const home = new Elysia(config).use(routes);
-
-home.get("/", sayHello);
-home.post("/", sayHiPerson, {
-  body: PersonSchema,
-  error: formatApiError,
-});
+export const home = new Elysia(config)
+  .use(routes)
+  .get("/", sayHello)
+  .post("/", sayHiPerson, {
+    body: PersonSchema,
+    error: formatApiError,
+  });

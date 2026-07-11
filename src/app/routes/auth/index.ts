@@ -33,7 +33,7 @@ export const auth = new Elysia(config)
     error: formatApiError,
   })
   .post("/register", register, {
-    body: UsersInsertSchema.pick({ email: true, name: true }),
+    body: UsersInsertSchema.pick({ email: true, name: true, password: true }),
     error: formatApiError,
   })
   .use(requireAuth())
