@@ -112,18 +112,33 @@ type ErrorType = Array<{
   path: (string | number)[];
   message: string;
 }>;
+export interface FormattedValidationError {
+  field: string;
+  message: string;
+}
 
-export const formatApiError = (errors: any) => {
+export const formatApiError = (
+  errors: any,
+): FormattedValidationError[] | any => {
   const formatted = trySyncWrapper(() => JSON.parse(errors.error.message));
   const error = formatted?.errors as ErrorType;
   const type = formatted?.type;
-  if (!formatted || type !== "validation") return error;
+  if (!hasValue(formatted) || type !== "validation") return error;
+  const formattedError = trySyncWrapper(() => {
+    return error.map((error) => ({
+      field: error.path.join("."),
+      message: error.message,
+    }));
+  });
+  const fError = [
+    {
+      code: errors?.error?.code,
+      message: errors.error?.customError,
+    },
+  ];
   return apiError(
     "VALIDATION_ERROR",
     "Validation error",
-    error.map((error) => ({
-      field: error.path.join("."),
-      message: error.message,
-    })),
+    formattedError || fError,
   );
 };
